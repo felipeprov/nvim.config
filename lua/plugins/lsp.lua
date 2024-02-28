@@ -37,11 +37,11 @@ return {
         },
         config = function()
             require("mason").setup({
-                ensure_installed = {'codelldb'}
+                ensure_installed = {'codelldb','coreclr' }
             })
             local mndap = require('mason-nvim-dap')
             mndap.setup {
-                ensure_installed = { 'codelldb' },
+                ensure_installed = { 'codelldb', 'coreclr' },
                 handlers = {} 
             }
         end
@@ -98,7 +98,7 @@ return {
             end)
 
             require('mason-lspconfig').setup({
-                ensure_installed = { "clangd", "cmake", "lua_ls", "marksman", "glsl_analyzer" },
+                ensure_installed = { "clangd", "cmake", "lua_ls", "marksman", "glsl_analyzer", 'omnisharp' },
                 handlers = {
                     lsp_zero.default_setup,
                     lua_ls = function()
