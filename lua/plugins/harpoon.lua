@@ -13,3 +13,4 @@ return {
 		vim.keymap.set("n", "<C-v>", function() ui.nav_file(4) end)
 	end
 }
+

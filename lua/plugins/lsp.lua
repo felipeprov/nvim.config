@@ -11,6 +11,32 @@ return {
         end,
     },
     {
+        'hrsh7th/nvim-cmp',
+        event = 'InsertEnter',
+        dependencies = {
+            { 'L3MON4D3/LuaSnip' },
+        },
+        config = function()
+            -- Here is where you configure the autocompletion settings.
+            local lsp_zero = require('lsp-zero')
+            lsp_zero.extend_cmp()
+
+            -- And you can configure cmp even more, if you want to.
+            local cmp = require('cmp')
+            local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
+            cmp.setup({
+                formatting = lsp_zero.cmp_format(),
+                mapping = cmp.mapping.preset.insert({
+                    ['<C-Space>'] = cmp.mapping.complete(),
+                    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+                    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+                })
+            })
+        end
+    },
+    {
         "rcarriga/nvim-dap-ui",
         dependencies = "mfussenegger/nvim-dap",
         config = function()
@@ -37,44 +63,15 @@ return {
         },
         config = function()
             require("mason").setup({
-                ensure_installed = {'codelldb','coreclr' }
+                ensure_installed = { 'codelldb' }
             })
             local mndap = require('mason-nvim-dap')
             mndap.setup {
-                ensure_installed = { 'codelldb', 'coreclr' },
-                handlers = {} 
+                ensure_installed = { 'codelldb' },
+                handlers = {}
             }
         end
     },
-
-    -- Autocompletion
-    {
-        'hrsh7th/nvim-cmp',
-        event = 'InsertEnter',
-        dependencies = {
-            { 'L3MON4D3/LuaSnip' },
-        },
-        config = function()
-            -- Here is where you configure the autocompletion settings.
-            local lsp_zero = require('lsp-zero')
-            lsp_zero.extend_cmp()
-
-            -- And you can configure cmp even more, if you want to.
-            local cmp = require('cmp')
-            local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-            cmp.setup({
-                formatting = lsp_zero.cmp_format(),
-                mapping = cmp.mapping.preset.insert({
-                    ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-                    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-                    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-                })
-            })
-        end
-    },
-
     -- LSP
     {
         'neovim/nvim-lspconfig',
@@ -95,16 +92,29 @@ return {
                 -- see :help lsp-zero-keybindings
                 -- to learn the available actions
                 lsp_zero.default_keymaps({ buffer = bufnr })
+                lsp_zero.buffer_autoformat()
             end)
 
             require('mason-lspconfig').setup({
-                ensure_installed = { "clangd", "cmake", "lua_ls", "marksman", "glsl_analyzer", 'omnisharp' },
+                ensure_installed = {
+                    "clangd",
+                    "cmake",
+                    "lua_ls",
+                    "marksman",
+                    "glsl_analyzer",
+                    'omnisharp' },
                 handlers = {
                     lsp_zero.default_setup,
                     lua_ls = function()
                         -- (Optional) Configure lua language server for neovim
                         local lua_opts = lsp_zero.nvim_lua_ls()
                         require('lspconfig').lua_ls.setup(lua_opts)
+                        require('lspconfig').clangd.setup({
+                            cmd = { "clangd", "--background-index" },
+                            root_dir = require('lspconfig/util')
+                                .root_pattern("compile_commands.json",
+                                    "compile_flags.txt", ".git"),
+                        })
                     end,
                 }
             })

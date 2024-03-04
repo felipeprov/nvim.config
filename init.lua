@@ -1,12 +1,13 @@
+-- Author: Felipe provenzano
+require("config.colors")
+require("config.editor")
+require("config.lazy_config")
+require("config.remap")
 
-require("felipeprov.editor")
-require("felipeprov.remap")
-require("felipeprov.lazyf")
-require("felipeprov.colors")
-
+-- setup my plugins
 require("lazy").setup({
     { import = "plugins" }
 })
 
--- setup my files
-ColorMyVim()
+-- setup my colors/transparency
+--ColorMyVim()
