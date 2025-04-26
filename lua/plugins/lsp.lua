@@ -1,6 +1,9 @@
 return {
     {
         'VonHeikemen/lsp-zero.nvim',
+        dependencies = {
+            "nvim-neotest/nvim-nio"
+        },
         branch = 'v3.x',
         lazy = true,
         config = false,
@@ -24,6 +27,7 @@ return {
             -- And you can configure cmp even more, if you want to.
             local cmp = require('cmp')
             local cmp_select = { behavior = cmp.SelectBehavior.Select }
+            local cmd_action = require('lsp-zero').cmp_action()
 
             cmp.setup({
                 formatting = lsp_zero.cmp_format(),
@@ -32,6 +36,8 @@ return {
                     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+                    ['<C-f>'] = cmd_action.luasnip_jump_forward(),
+                    ['<C-b>'] = cmd_action.luasnip_jump_backward(),
                 })
             })
         end
@@ -102,7 +108,8 @@ return {
                     "lua_ls",
                     "marksman",
                     "glsl_analyzer",
-                    'omnisharp' },
+                    'omnisharp',
+                    'zls' },
                 handlers = {
                     lsp_zero.default_setup,
                     lua_ls = function()
@@ -114,6 +121,9 @@ return {
                             root_dir = require('lspconfig/util')
                                 .root_pattern("compile_commands.json",
                                     "compile_flags.txt", ".git"),
+                        })
+                        require('lspconfig').zls.setup({
+                            cmd = { "D:/2.Programs/zig/zig-windows-x86_64-0.14.0-dev.1949+fffbb511d/zls.exe" },
                         })
                     end,
                 }
