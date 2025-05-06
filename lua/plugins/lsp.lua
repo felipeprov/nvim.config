@@ -1,5 +1,11 @@
 return {
     {
+        'williamboman/mason.nvim',
+        config = function()
+            require("mason").setup()
+        end
+    },
+    {
         'VonHeikemen/lsp-zero.nvim',
         dependencies = {
             "nvim-neotest/nvim-nio"
@@ -42,42 +48,42 @@ return {
             })
         end
     },
-    {
-        "rcarriga/nvim-dap-ui",
-        dependencies = "mfussenegger/nvim-dap",
-        config = function()
-            local dap = require("dap")
-            local dapui = require("dapui")
+    --{
+    --    "rcarriga/nvim-dap-ui",
+    --    dependencies = "mfussenegger/nvim-dap",
+    --    config = function()
+    --        local dap = require("dap")
+    --        local dapui = require("dapui")
 
-            dapui.setup()
-            dap.listeners.after.event_initialized["dapui_config"] = function()
-                dapui.open()
-            end
-            dap.listeners.before.event_terminated["dapui_config"] = function()
-                dapui.close()
-            end
-            dap.listeners.before.event_exited["dapui_config"] = function()
-                dapui.close()
-            end
-        end
-    },
-    {
-        "jay-babu/mason-nvim-dap.nvim",
-        dependencies = {
-            "williamboman/mason.nvim",
-            "mfussenegger/nvim-dap"
-        },
-        config = function()
-            require("mason").setup({
-                ensure_installed = { 'codelldb' }
-            })
-            local mndap = require('mason-nvim-dap')
-            mndap.setup {
-                ensure_installed = { 'codelldb' },
-                handlers = {}
-            }
-        end
-    },
+    --        dapui.setup()
+    --        dap.listeners.after.event_initialized["dapui_config"] = function()
+    --            dapui.open()
+    --        end
+    --        dap.listeners.before.event_terminated["dapui_config"] = function()
+    --            dapui.close()
+    --        end
+    --        dap.listeners.before.event_exited["dapui_config"] = function()
+    --            dapui.close()
+    --        end
+    --    end
+    --},
+    --{
+    --    "jay-babu/mason-nvim-dap.nvim",
+    --    dependencies = {
+    --        "williamboman/mason.nvim",
+    --        "mfussenegger/nvim-dap"
+    --    },
+    --    config = function()
+    --        require("mason").setup({
+    --            ensure_installed = { 'codelldb' }
+    --        })
+    --        local mndap = require('mason-nvim-dap')
+    --        mndap.setup {
+    --            ensure_installed = { 'codelldb' },
+    --            handlers = {}
+    --        }
+    --    end
+    --},
     -- LSP
     {
         'neovim/nvim-lspconfig',
@@ -85,6 +91,7 @@ return {
         event = { 'BufReadPre', 'BufNewFile' },
         dependencies = {
             { 'hrsh7th/cmp-nvim-lsp' },
+            { 'williamboman/mason.nvim' },
             { 'williamboman/mason-lspconfig.nvim' },
         },
         config = function()
@@ -113,18 +120,18 @@ return {
                 handlers = {
                     lsp_zero.default_setup,
                     lua_ls = function()
-                        -- (Optional) Configure lua language server for neovim
+                    --     (Optional) Configure lua language server for neovim
                         local lua_opts = lsp_zero.nvim_lua_ls()
                         require('lspconfig').lua_ls.setup(lua_opts)
-                        require('lspconfig').clangd.setup({
-                            cmd = { "clangd", "--background-index" },
-                            root_dir = require('lspconfig/util')
-                                .root_pattern("compile_commands.json",
-                                    "compile_flags.txt", ".git"),
-                        })
-                        require('lspconfig').zls.setup({
-                            cmd = { "D:/2.Programs/zig/zig-windows-x86_64-0.14.0-dev.1949+fffbb511d/zls.exe" },
-                        })
+                        --require('lspconfig').clangd.setup({
+                        --    cmd = { "clangd", "--background-index" },
+                        --    root_dir = require('lspconfig/util')
+                        --        .root_pattern("compile_commands.json",
+                        --            "compile_flags.txt", ".git"),
+                        --})
+                       -- require('lspconfig').zls.setup({
+                       --     cmd = { "D:/2.Programs/zig/zig-windows-x86_64-0.14/zls.exe" },
+                       -- })
                     end,
                 }
             })
