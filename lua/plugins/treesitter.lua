@@ -12,6 +12,12 @@ return {
         "html",
         "css",
         "bash",
+        "c",
+        "cpp",
+        "c_sharp",
+        "zig",
+        "rust",
+        "go",
       },
 
       highlight = {
