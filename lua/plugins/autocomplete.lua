@@ -4,7 +4,6 @@ return {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",     -- LSP source
-      "hrsh7th/cmp-buffer",       -- buffer words
       "hrsh7th/cmp-path",         -- filesystem paths
       "L3MON4D3/LuaSnip",         -- snippet engine (required)
       "saadparwaiz1/cmp_luasnip", -- snippet source
@@ -14,6 +13,7 @@ return {
       local luasnip = require("luasnip")
       local context = require("cmp.config.context")
       local neogen = require('neogen')
+	  local types = require("cmp.types")
 
       require("luasnip.loaders.from_vscode").lazy_load() -- optional
 
@@ -66,10 +66,17 @@ return {
         }),
 
         sources = {
-          { name = "nvim_lsp" },
+			{
+				name = "nvim_lsp",
+				entry_filter = function(entry, ctx)
+					-- hide plain text items coming from LSP
+					local kind = entry:get_kind()
+					local kind_text = types.lsp.CompletionItemKind.Text
+					return kind ~= kind_text
+				end,
+			},
           { name = "luasnip" },
           { name = "path" },
-          { name = "buffer" },
         },
       })
     end,

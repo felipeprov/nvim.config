@@ -6,6 +6,7 @@ vim.g.mapleader = " "
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.shell = "pwsh.exe"
+--vim.opt.shell = "kitty"
 vim.opt.shellcmdflag = "-NoLogo -NoProfile -Command"
 vim.opt.shellquote = ""
 vim.opt.shellxquote = ""
@@ -32,7 +33,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 require('config.lazy')
 
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show error" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Send to loclist" })
 
 vim.diagnostic.config({
