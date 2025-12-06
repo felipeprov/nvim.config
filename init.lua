@@ -2,6 +2,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.termguicolors = true
 vim.opt.mouse = "a"
+vim.opt.winborder = "rounded"
 vim.g.mapleader = " "
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
@@ -10,6 +11,12 @@ vim.opt.shell = "pwsh.exe"
 vim.opt.shellcmdflag = "-NoLogo -NoProfile -Command"
 vim.opt.shellquote = ""
 vim.opt.shellxquote = ""
+vim.opt.ignorecase = true
+vim.opt.smartindent = true
+vim.opt.termguicolors = true
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.colorcolumn = "80"
 
 -- LSP keymaps: override Neovim defaults when an LSP attaches
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -42,8 +49,23 @@ vim.diagnostic.config({
   update_in_insert = false,
 })
 
---vim.keymap.set("n", "<leader>t", ":ToggleTerm<CR>", { desc = "Toggle terminal" })
----- Next buffer
---vim.keymap.set("n", "<Tab>", ":bnext<CR>", { desc = "Next buffer" })
----- Previous buffer
---vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { desc = "Previous buffer" })
+
+-- Make all LSP floating windows use rounded borders by default
+local orig_floating_preview = vim.lsp.util.open_floating_preview
+
+---@diagnostic disable-next-line: duplicate-set-field
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+  opts = opts or {}
+  opts.border = opts.border or "rounded"
+  return orig_floating_preview(contents, syntax, opts, ...)
+end
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank({
+      higroup = "Visual",      -- what highlight group to use
+      timeout = 200,           -- time in ms the highlight stays
+      on_visual = true,        -- highlight visual-mode yanks too
+    })
+  end,
+})
