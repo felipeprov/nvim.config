@@ -71,3 +71,4 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.opt.makeprg = "cmake --build build -j"
+vim.keymap.set("n", "<leader>hs", "<Cmd>LspClangdSwitchSourceHeader<CR>", { desc = "Switch header/source" })
