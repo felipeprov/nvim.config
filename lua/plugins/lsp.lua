@@ -57,6 +57,8 @@ return {
 		vim.lsp.enable({
 			"lua_ls",
 			"ts_ls",
+			"clangd",
+			"cmake"
 			-- add more here as you install them
 		})
 	end,

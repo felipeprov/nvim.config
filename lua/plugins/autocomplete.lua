@@ -86,6 +86,14 @@ return {
 					{ name = "path" },
 				},
 			})
+
+			cmp.setup.filetype("cmake", {
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+					{ name = "path" },
+					{ name = "buffer" },
+				}),
+			})
 		end,
 	},
 }

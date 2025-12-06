@@ -66,10 +66,11 @@ return {
 
     -- Files / search
     map("n", "<leader>ff", builtin.find_files,  vim.tbl_extend("force", opts, { desc = "Telescope: Find files" }))
-    map("n", "<leader>fg", builtin.live_grep,   vim.tbl_extend("force", opts, { desc = "Telescope: Live grep" }))
+    map("n", "<leader>fa", builtin.live_grep,   vim.tbl_extend("force", opts, { desc = "Telescope: Live grep" }))
     map("n", "<leader>fb", builtin.buffers,     vim.tbl_extend("force", opts, { desc = "Telescope: Buffers" }))
     map("n", "<leader>fh", builtin.help_tags,   vim.tbl_extend("force", opts, { desc = "Telescope: Help tags" }))
     map("n", "<leader>fr", builtin.oldfiles,    vim.tbl_extend("force", opts, { desc = "Telescope: Recent files" }))
+    map("n", "<leader>fk", builtin.keymaps,    vim.tbl_extend("force", opts, { desc = "Telescope: Keymaps" }))
 
     -- LSP-related (works great with your LSP setup)
     map("n", "<leader>fd", builtin.diagnostics, vim.tbl_extend("force", opts, { desc = "Telescope: Diagnostics" }))

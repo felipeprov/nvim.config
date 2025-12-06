@@ -69,3 +69,5 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     })
   end,
 })
+
+vim.opt.makeprg = "cmake --build build -j"
