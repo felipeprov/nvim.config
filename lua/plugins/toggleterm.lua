@@ -3,10 +3,10 @@ return {
   version = "*",
   config = function()
     require("toggleterm").setup({
-      size = 15,
+      size = 25,
       shell = "pwsh",
       open_mapping = [[<C-\>]],
-      direction = "horizontal", -- feels like VS Code
+      direction = "float", -- feels like VS Code
       shade_terminals = true,
     })
   end,

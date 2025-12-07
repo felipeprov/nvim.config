@@ -19,6 +19,7 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.colorcolumn = "80"
 vim.opt.signcolumn = "yes:1"
+vim.opt.wrap = false
 
 -- LSP keymaps: override Neovim defaults when an LSP attaches
 vim.api.nvim_create_autocmd("LspAttach", {

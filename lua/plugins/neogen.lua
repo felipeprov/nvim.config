@@ -15,6 +15,11 @@ return {
 						annotation_convention = "tsdoc",
 					},
 				},
+				c = {
+					template = {
+						annotation_convention = "doxygen",  -- or "kernel_doc"
+					},
+				},
 			},
 		})
 
@@ -22,6 +27,9 @@ return {
 		vim.keymap.set("n", "<leader>df", function()
 			require("neogen").generate({ type = "func"})
 		end, { desc = "Generate documentation for function" })
+		vim.keymap.set("n", "<leader>dd", function()
+			require("neogen").generate()
+		end, { desc = "Generate documentation" })
 		vim.keymap.set("n", "<leader>dc", function()
 			require("neogen").generate({ type = "class"})
 		end, { desc = "Generate documentation for class" })
