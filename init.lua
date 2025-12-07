@@ -75,3 +75,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.opt.makeprg = "cmake --build build -j"
 vim.keymap.set("n", "<leader>hs", "<Cmd>LspClangdSwitchSourceHeader<CR>", { desc = "Switch header/source" })
+
+vim.api.nvim_set_hl(0, "BufferLineSeparator",           { fg = "#1e1e1e", bg = "NONE" })
+vim.api.nvim_set_hl(0, "BufferLineSeparatorVisible",    { fg = "#1e1e1e", bg = "NONE" })
+vim.api.nvim_set_hl(0, "BufferLineSeparatorSelected",   { fg = "#1e1e1e", bg = "NONE" })
+
