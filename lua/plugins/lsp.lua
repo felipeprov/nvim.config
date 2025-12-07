@@ -1,10 +1,16 @@
 return {
 	"neovim/nvim-lspconfig",
 	config = function()
+		vim.lsp.handlers["textDocument/signatureHelp"] =
+		vim.lsp.with(vim.lsp.handlers.signature_help, {
+			border = "rounded",
+		})
 		----------------------------------------------------------------------
 		-- 1. Common on_attach: keymaps etc.
 		----------------------------------------------------------------------
 		local function on_attach(client, bufnr)
+			local opts = { buffer = bufnr, silent = true }
+			vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
 		end
 
 		----------------------------------------------------------------------
@@ -60,6 +66,35 @@ return {
 			"clangd",
 			"cmake"
 			-- add more here as you install them
+		})
+
+		-- Auto-trigger signature help for languages that support it
+		local sig_triggers = { ["("] = true, [","] = true, ["<"] = true }
+
+		vim.api.nvim_create_autocmd("InsertCharPre", {
+			callback = function()
+				local ch = vim.v.char
+				if not sig_triggers[ch] then
+					return
+				end
+
+				-- Only do this in buffers with LSP that supports signature help
+				local clients = vim.lsp.get_clients({ bufnr = 0 })
+				for _, client in ipairs(clients) do
+					if client.server_capabilities.signatureHelpProvider then
+						-- Optional: limit to JS/TS if you want
+						local ft = vim.bo.filetype
+						if ft == "javascript" or ft == "javascriptreact"
+							or ft == "typescript" or ft == "typescriptreact" then
+							-- call after the char is actually inserted
+							vim.defer_fn(function()
+								pcall(vim.lsp.buf.signature_help)
+							end, 0)
+						end
+						break
+					end
+				end
+			end,
 		})
 	end,
 }

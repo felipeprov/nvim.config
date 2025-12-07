@@ -1,6 +1,7 @@
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.termguicolors = true
+vim.opt.numberwidth = 4
 vim.opt.mouse = "a"
 vim.opt.winborder = "rounded"
 vim.g.mapleader = " "
@@ -17,6 +18,7 @@ vim.opt.termguicolors = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.colorcolumn = "80"
+vim.opt.signcolumn = "yes:1"
 
 -- LSP keymaps: override Neovim defaults when an LSP attaches
 vim.api.nvim_create_autocmd("LspAttach", {
