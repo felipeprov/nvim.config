@@ -18,6 +18,9 @@ return {
 		--    (this replaces the old `require('lspconfig').xyz.setup{}` style)
 		----------------------------------------------------------------------
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		capabilities.textDocument.foldingRange = {
+			lineFoldingOnly = true
+		}
 		vim.lsp.config("*", {
 			on_attach = on_attach,
 			-- you can add capabilities, flags, etc. here if needed
