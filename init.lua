@@ -21,6 +21,11 @@ vim.opt.colorcolumn = "80"
 vim.opt.signcolumn = "yes:1"
 vim.opt.wrap = false
 
+vim.opt.foldenable = true
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.foldcolumn = "1"
+
 -- LSP keymaps: override Neovim defaults when an LSP attaches
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
