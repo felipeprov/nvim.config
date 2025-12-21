@@ -131,9 +131,9 @@ local function run_ctest()
   ctest_prev_win = vim.api.nvim_get_current_win()
 
   Job:new({
-    command = "ctest",
-    args = { "--output-on-failure" },
-    cwd = "build",  -- adjust to your build dir
+    command = "make",
+    args = { "test"},
+    cwd = ".",  -- adjust to your build dir
     on_exit = function(j, return_val)
       vim.schedule(function()
         local stdout = j:result()
@@ -305,3 +305,13 @@ vim.opt.fillchars = {
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.laststatus = 3
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "c", "cpp", "h", "lua", "python", "javascript", "typescript" },
+  callback = function()
+	vim.opt_local.spell = true
+    vim.opt_local.spelllang = { "en_us" }      -- or { "en_us", "fr" }
+    vim.opt_local.spelloptions:append("camel") -- nicer for camelCase
+    vim.cmd("syntax spell default")            -- IMPORTANT: restrict to comments/strings
+  end,
+})
