@@ -315,3 +315,12 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.cmd("syntax spell default")            -- IMPORTANT: restrict to comments/strings
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "gitcommit", "text" },
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = { "en_us" }      -- or { "en_us", "fr" }
+    vim.opt_local.spelloptions:append("camel") -- optional
+  end,
+})
