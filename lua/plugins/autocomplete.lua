@@ -17,6 +17,21 @@ return {
 
 			require("luasnip.loaders.from_vscode").lazy_load() -- optional
 
+			local function in_call_arguments()
+				local ok, node = pcall(vim.treesitter.get_node)
+				if not ok or not node then return false end
+
+				-- Walk up the tree and see if we're inside an argument list.
+				while node do
+					local t = node:type()
+					if t == "arguments" or t == "argument_list" or t == "parameters" or t == "parameter_list" then
+						return true
+					end
+					node = node:parent()
+				end
+				return false
+			end
+
 			cmp.setup({
 				enabled = function()
 					-- allow in command-line mode
@@ -29,6 +44,10 @@ return {
 						or context.in_syntax_group("Comment") then
 						return false
 					end
+
+					--if in_call_arguments() then
+					--	return false
+					--end
 
 					return true
 				end,

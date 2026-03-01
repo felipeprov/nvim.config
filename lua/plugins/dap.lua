@@ -22,6 +22,10 @@ return {
 		config = function()
 			local dap = require("dap")
 
+			local mason = vim.fn.stdpath("data")
+			local codelldb_path = mason .. "\\mason\\packages\\codelldb\\extension\\adapter\\codelldb.exe"
+			local liblldb_path  = mason .. "\\mason\\packages\\codelldb\\extension\\lldb\\bin\\liblldb.dll"
+
 			------------------------------------------------------------------
 			-- Basic keymaps
 			------------------------------------------------------------------
@@ -35,7 +39,7 @@ return {
 
 			opts.desc = "Toggle breakpoint"
 			map("n", "<leader>db", function() dap.toggle_breakpoint() end, opts)
-			
+
 			opts.desc = "Toggle breakpoint with condition"
 			map("n", "<leader>dB", function()
 				dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
@@ -58,6 +62,19 @@ return {
 				},
 			}
 
+			dap.adapters.codelldb = {
+				type = "server",
+				port = "${port}",
+				executable = {
+					command = codelldb_path,
+					args = { "--port", "${port}" },
+					-- On some setups this helps it find liblldb:
+					env = {
+						LLDB_LIB_PATH = liblldb_path,
+					},
+				},
+			}
+
 			-- configurations for JS / TS
 			for _, language in ipairs({ "javascript", "typescript", "javascriptreact", "typescriptreact" }) do
 				dap.configurations[language] = {
@@ -77,7 +94,70 @@ return {
 					},
 				}
 			end
+
+			-- configurations for c, cpp and rust
+			for _, lang in ipairs({ "c", "cpp", "rust" }) do
+				dap.configurations[lang] = {
+					{
+						name = "Launch (codelldb)",
+						type = "codelldb",
+						request = "launch",
+						program = function()
+							-- adjust if your exe is in build/ or has .exe
+							return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "\\provengine.exe", "file")
+						end,
+						cwd = "${workspaceFolder}",
+						stopOnEntry = false,
+						args = {},
+						-- If you want to break on main reliably:
+						-- initCommands = { "breakpoint set -n main" },
+					},
+				}
+			end
+
 		end,
 	},
+	-- ui
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+		config = function()
+			local dap = require("dap")
+			local dapui = require("dapui")
+
+			dapui.setup({
+				controls = {
+					enabled = true,
+				},
+
+				floating = { border = "single" },
+				layouts = {
+					{
+						position = "bottom",
+						size = 20,
+						elements = {
+							{ id = "scopes", size = 0.65 },     -- Variables
+							{ id = "stacks", size = 0.35 },     -- Call stack
+						},
+					},
+				},
+			})
+
+			-- Auto-open/close
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
+
+			-- Keybinds
+			vim.keymap.set("n", "<leader>du", dapui.toggle, { noremap = true, silent = true, desc = "Toggle DAP UI" })
+			vim.keymap.set("n", "<leader>de", dapui.eval,   { noremap = true, silent = true, desc = "Eval under cursor" })
+		end
+}
 }
 

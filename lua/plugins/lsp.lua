@@ -18,6 +18,8 @@ return {
 		--    (this replaces the old `require('lspconfig').xyz.setup{}` style)
 		----------------------------------------------------------------------
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+		local util = require("lspconfig.util")
+
 		capabilities.textDocument.foldingRange = {
 			lineFoldingOnly = true
 		}

@@ -74,11 +74,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
       higroup = "Visual",      -- what highlight group to use
       timeout = 200,           -- time in ms the highlight stays
       on_visual = true,        -- highlight visual-mode yanks too
-    })
+		})
   end,
 })
 
-vim.opt.makeprg = "cmake --build build -j"
+--vim.opt.makeprg = "cmake --build build -j"
+vim.opt.makeprg = "make"
 vim.keymap.set("n", "<leader>hs", "<Cmd>LspClangdSwitchSourceHeader<CR>", { desc = "Switch header/source" })
 
 vim.api.nvim_set_hl(0, "BufferLineSeparator",           { fg = "#1e1e1e", bg = "NONE" })

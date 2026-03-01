@@ -17,8 +17,8 @@ local vscode = {
   priority = 1000,
   config = function()
     require("vscode").setup({
-      transparent = true,
-      italic_comments = true,
+     -- transparent = true,
+     -- italic_comments = true,
     })
     require("vscode").load()
     vim.cmd([[
@@ -40,4 +40,4 @@ local vscode = {
   end,
 }
 
-return vscode
+return tokyo 
